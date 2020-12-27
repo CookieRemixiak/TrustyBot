@@ -1,0 +1,24 @@
+{
+  "name": "trustybot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "discord.js": "^12.5.1",
+    "enmap": "^5.8.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CookieRemixiak/TrustyBot.git"
+  },
+  "author": "Remixiak krul",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CookieRemixiak/TrustyBot/issues"
+  },
+  "homepage": "https://github.com/CookieRemixiak/TrustyBot#readme"
+}
