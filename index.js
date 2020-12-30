@@ -4,11 +4,27 @@ const fs = require("fs");
 const config  = require("./config.json");
 const colors = require("colors");
 const prefix = config.prefix;
-var theme = "#85c8d3"
+const sql = require("mysql");
 
-const ping = new Discord.MessageEmbed()
-.setColor("yellow")
-.setDescription(`**Mój ping wynosi:** ${Math.round(client.ws.ping)}`)
+/* client.once('message', message => {
+    if(message.content === "<@792469472568803329>" || "<@!792469472568803329>") {
+        const wzmianka = new Discord.MessageEmbed()
+        .setAuthor(`Wykryto oznaczenie!`, client.user.displayAvatarURL())
+        .setColor(`#ff0000`)
+        .addField('Prefix: ', '\`t^\`', true)
+        .addField('Ping: ', Math.round(client.ws.ping), true)
+        .setThumbnail(client.user.displayAvatarURL())
+        .setTimestamp()
+        .setFooter(`Trusty`)
+        message.channel.send(wzmianka)
+    } else return;
+}) */
+
+// &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& WENHOOKI  &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+
+const webohook_admi = new Discord.WebhookClient("793206793454878732", "pENZKXsUTYu65zcZRvqm495-4aKk9E3QTe0FgMqKa4S8FdYl_V9vQMz2DWRCxpXnxXMq");
+const webhook_logs_join_remove = new Discord.WebhookClient("793448642546630677", "romZb8pNbA2t4v7IoLZk5IgVgDIZDDapsMRQ-wE_vzW8Oe0EvsCn2BmQisKSc5i46isN");
 
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& EVENT ON MESSAGE &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
@@ -29,25 +45,16 @@ const cmd = args.shift().toLowerCase();
 
 
 if(cmd == 'ping' || cmd == `pong`) {
-    var ping = new Discord.MessageEmbed().setAuthor(`🏓 Pong`).setColor("#fcfccf")
-    message.channel.send(ping).then(m =>{
-        // The math thingy to calculate the user's ping
-          var ping = m.createdTimestamp - message.createdTimestamp;
-
-        // Basic embed
-          var embed = new Discord.MessageEmbed()
-          .setAuthor(`Ping wynosi: ${ping}`)
-          .setColor("#fcfccf")
-          
-          // Then It Edits the message with the ping variable embed that you created
-          m.edit(embed)
-      });
+return message.channel.send("Pong: " + client.ws.ping + "ms");
 }
+
+
 
 if(cmd === `invite` || cmd == `zaproś` || cmd == `zapros`){
 var embed_zapro = new Discord.MessageEmbed()
-.setColor(theme)
-.setDescription(`**Generator zaproszenia**`)
+.setColor("cyan")
+.setAuthor(`Tworzenie zaproszenia...`, client.user.displayAvatarURL())
+.setThumbnail(client.user.displayAvatarURL())
 var opcja = (args[0])
 if(!opcja){
     return message.channel.send(embed_zapro.addField(`Jakie zaproszenie chcesz otrzymać?`, `\`t^invite bot\` lub \`t^invite serwer\``, true))
@@ -60,7 +67,10 @@ if(opcja == "serwer"){
 }
 }
 
-if(cmd === `pomoc` || cmd === `help` || cmd === `h`){
+
+
+
+if(cmd === `pomoc` || cmd === `help` || cmd === `h` || cmd === `p`){
     var embed_pomoc = new Discord.MessageEmbed()
     .setAuthor(`Komendy`, client.user.displayAvatarURL())
     .setColor(`#ff0000`)
@@ -69,19 +79,19 @@ if(cmd === `pomoc` || cmd === `help` || cmd === `h`){
     .setFooter(`Trusty`)
     var opcja1 = (args[0])
     if(!opcja1){
-        return message.channel.send(`\n> \`Podaj kategorię\`\nDostępne: **\`pomoc\`, \`ustawienia\`, \`info\`, \`mod\`**`)
+        return message.channel.send(embed_pomoc.setDescription(`\n> **Podaj kategorię** \nDostępne:`).addField('⚙ | Support', 'Komendy dotyczące bota!', false).addField('🛠️ | Ustawienia', 'Tutaj skonfigurujesz kanały i wiadomości!', false).addField('🔨 | Mod', 'Tutaj znajdziesz komendy moderacyjne!', false).addField('ℹ️ | Info', 'Przydatne do sprawdzania kont! (informacje o bocie, serwerze, użytkowników)', false))
     }
-    if(opcja1 === "pomoc"){
-        return message.channel.send(`\`\`\`Komendy Pomocy\`\`\``, `\`▪\` invite\n\`▪\` report\n`, false)
+    if(opcja1 === "support"){
+        return message.channel.send(embed_pomoc.setDescription(`\`\`\`Komendy Support\`\`\`\n\`▪\` invite\n\`▪\` report\n\n\`\`\` \`\`\``, false))
     }
     if(opcja1 === "ustawienia"){
-        return message.channel.send(`\`\`\`Komendy Konfiguracyjne\`\`\``, `\`▪\` ustaw\n\`▪\` config\n`, false)
+        return message.channel.send(embed_pomoc.setDescription(`\`\`\`Komendy Konfiguracyjne\`\`\`\n\`▪\` ustaw\n\`▪\` config\n\n\`\`\` \`\`\``, false))
     }
     if(opcja1 === "info"){
-        return message.channel.send(`\`\`\`Komendy Informacyjne\`\`\``, `\`▪\` user\n\`▪\` serwer\n\`▪\` bot\n\`▪\` regulamin\n`, false)
+        return message.channel.send(embed_pomoc.setDescription(`\`\`\`Komendy Informacyjne\`\`\`\n\`▪\` user\n\`▪\` serwer\n\`▪\` bot\n\`▪\` regulamin\n\n\`\`\` \`\`\``, false))
     }
     if(opcja1 === "mod"){
-        return message.channel.send(`\`\`\`Komendy Moderacyjne\`\`\``, `\`▪\` ban\n\`▪\` tempban\n\`▪\` unban\n\`▪\` kick\n\`▪\` mute\n\`▪\` tempmute\n\`▪\` unmute\n\`▪\` warn\n\`▪\` unwarn\n\`▪\` warns\n\`▪\` delete-warnings\n\`▪\` lock\n\`▪\` un-lock\n\`▪\` note\n\`▪\` un-note\n\`▪\` clear\n`, false)
+        return message.channel.send(embed_pomoc.setDescription(`\`\`\`Komendy Moderacyjne\`\`\`\n\`▪\` ban\n\`▪\` tempban\n\`▪\` unban\n\`▪\` kick\n\`▪\` mute\n\`▪\` tempmute\n\`▪\` unmute\n\`▪\` warn\n\`▪\` unwarn\n\`▪\` warns\n\`▪\` delete-warnings\n\`▪\` lock\n\`▪\` un-lock\n\`▪\` note\n\`▪\` un-note\n\`▪\` clear\n\n\`\`\` \`\`\``, false))
     }
 }
 
@@ -97,7 +107,7 @@ if(cmd === `report`){
 */
     var oznaczona_osoba = message.mentions.members.first();
     if(!oznaczona_osoba){
-        return message.channel.send(`:x: **Oznacz osobę!**\nOznacz osobę, którą chcesz zgłosić\n\nPrzykład: \`t^report @Remixiak\``)
+        return message.channel.send(`:x: **Oznacz osobę!**\nOznacz osobę, którą chcesz zgłosić\n\nPrzykład: \`t^report @Remixiak powód\``)
     }
     var powod = args.slice(1).join(" ")
     if(!powod){
@@ -112,11 +122,7 @@ if(cmd === `report`){
 
 
 
-if(cmd === `ban`){
-
-   // var embed_ban = new Discord.MessageEmbed()
-  //  .setColor("#ff0000")
-
+if(cmd === `ban` || cmd === `b`){
 
     if(!message.member.hasPermission(`BAN_MEMBERS`)){
         return message.channel.send(`:x: **Brak permisji!**\n*Nie posiadasz permisji* \`BAN_MEMBERS\``)
@@ -128,31 +134,209 @@ if(cmd === `ban`){
         return message.channel.send(`:x: **Brak oznaczenia**\nOznacz osobę, którą chcesz zbanować\nPrzykład: \`t^ban @Toshinori\``)
     }
 
-        if(!do_bana.bannable || do_bana.id === message.author.id){
-            return message.channel.send(`:x: **Nie można wykonać komendy!**\nOsoba, która została oznaczona nie jest możliwa do zbanowania`)
-        }
+    if(!do_bana.bannable || do_bana.id === message.author.id){
+        return message.channel.send(`:x: **Nie można wykonać komendy!**\nOsoba, która została oznaczona nie jest możliwa do zbanowania`)
+    }else{
 
-        var powodp = args.slice(1).join(" ");
+    var powodp = args.slice(1).join(" ");
 
-        if(!powodp) return message.channel.send("Podaj powód bana!")
+    if(!powodp) return message.channel.send("Podaj powód bana!")
 
         try{
+        do_bana.ban()    
         message.channel.send(`**Zbanowano!**\nModerator: \`${message.author.tag}\`\nZbanowany: \`${do_bana.user.tag}\`\nPowód:\n\`\`\`\n${powodp}\n\`\`\``)
         do_bana.send(`Zostałeś zbanowany na serwerze **\`${message.guild.name}\`**, przez **\`${message.author.tag}\`**\n\nPowód:\n\`\`\`\n${powodp}\n\`\`\``)
-        do_bana.ban(`Zbanowany przez ${message.author.tag}, z powodu ${powodp}`)
         return;
         }catch(e){
             return message.reply("Błąd podczas nadawania bana, skontaktuj się z administracją bota :|")
         }
+    }
+}
+    
+
+if(cmd === `kick` || cmd === `k`){
+    if(!message.member.hasPermission(`KICK_MEMBERS`)){
+        return message.channel.send(`:x: **Brak permisji!**\n*Nie posiadasz permisji* \`KICK_MEMBERS\``)
+    }
+
+    var do_kicka = message.mentions.members.first();
+    if(!do_kicka){
+        return message.channel.send(`:x: **Brak oznaczenia**\nOznacz osobę, którą chcesz wyrzucić\nPrzykład: \`t^kick @Toshinori\``)
+    }
+
+    if(!do_kicka.kickable || do_kicka.id === message.author.id){
+        return message.channel.send(`:x: **Nie można wykonać komendy!**\nOsoba, która została oznaczona nie jest możliwa do wyrzucenia`)
+    }else{
+
+    var reason = args.slice(1).join(" ");
+    if(!reason) return message.channel.send("Podaj powód wyrzucenia!")
+
+    try{
+        do_kicka.kick()
+        message.channel.send(`**Wyrzucono!**\nModerator: \`${message.author.tag}\`\nWyrzucony: \`${do_kicka.user.tag}\`\nPowód:\n\`\`\`\n${reason}\n\`\`\``)
+        do_kicka.send(`Zostałeś wyrzucony z serwera **\`${message.guild.name}\`**, przez **\`${message.author.tag}\`**\n\nPowód:\n\`\`\`\n${reason}\n\`\`\``)
+        return;
+        }catch(e){
+            return message.reply("Błąd podczas nadawania bana, skontaktuj się z administracją bota :|")
+        }
+    }
 }
 
 
 
+if(cmd === `serwer` || cmd === "server" || cmd === "serwer-info"){
+
+    var owner = message.guild.ownerID
+    var sz = message.guild.members.cache.find(u => u.id === owner);
+    if(!sz){
+      sz = "Brak danych";
+    }  
+      var boty = message.guild.members.cache.filter(member => member.user.bot).size;
+      var serwus = message.guild.createdAt
+      var serwerEmbed = new Discord.MessageEmbed()       
+          .setColor("cyan")
+          .setThumbnail(message.guild.iconURL())
+          .setAuthor(`Informacje o Serwerze`, client.user.displayAvatarURL())
+          .addField(` **Nazwa:**`, `\`${message.guild.name}\``)
+          .addField(` **ID:**`, `\`${message.guild.id}\``)
+          .addField(` **Właściciel:**`, `${sz}`, true)
+          .addField(` **Użytkownicy:**`, `\`${message.guild.memberCount}\``, true)
+          .addField(` **Boty:**`, `\`${boty}\``, true)
+          .addField(` **Online:**`, `\`${message.guild.members.cache.filter(member => member.presence.status === "online").size}\``, true)
+          .addField(` **Zajętych:**`, `\`${message.guild.members.cache.filter(member => member.presence.status === "dnd").size}\``, true)
+          .addField(` **Offline:**`, `\`${message.guild.members.cache.filter(member => member.presence.status === "offline").size}\``, true)
+          .addField(` **Role:**`, `\`${message.guild.roles.cache.size}\``, true)
+          .addField(` **Najwyższa:**`, `${message.guild.roles.highest}`, true)
+          .addField(` **Emoji:**`, `\`${message.guild.emojis.cache.size}\``, true)
+          .addField(` **Utworzono:**`, `\`${
+    
+    serwus.getDate().toString().padStart(2, '0')}.${
+    (serwus.getMonth()+1).toString().padStart(2, '0')}.${
+    serwus.getFullYear().toString().padStart(4, '0')}\` **| Godzina:** \`${
+    serwus.getHours().toString().padStart(2, '0')}:${
+    serwus.getMinutes().toString().padStart(2, '0')}:${
+      serwus.getSeconds().toString().padStart(2, '0')}\` `)
+      .setFooter(`Trusty`, client.user.displayAvatarURL());
+         message.channel.send(serwerEmbed);
+}
+
+
+
+if(cmd === "user" || cmd === "user-info" || cmd === "info"){
+
+  var stat = {
+    online: `Online`,
+    dnd: `Nie przeszkadzać`,
+    idle: `Zajęty`,
+    offline: `Offline`
+}
+
+var status = {
+    online: `<:ONLINE:793462116811800596> `,
+    dnd: `<:DND:793462116190781440>`,
+    idle: `<:IDLE:793462116421599282>`,
+    offline: `<:OFFLINE:793462116480450570>`
+}
+
+
+let mentioneduserinfo = message.mentions.members.first() //oznaczony
+if (!mentioneduserinfo) {
+    var dt = message.author.createdAt //autor stworzył
+    var dol = message.member.joinedAt //autor doiłączył
+
+    let uEmbed = new Discord.MessageEmbed()
+        .setColor("#000000")
+        .setThumbnail(message.author.displayAvatarURL())
+        .addField(`**Nazwa:**`, `\`${message.author.username}\``, true)
+        .addField(`**Tag:**`, `\`#${message.author.discriminator}\``, true)
+        .addField(`**ID:**`, `\`${message.author.id}\``)
+        .addField(`**Status:**`, `${status[message.author.presence.status]} ${stat[message.author.presence.status]}`)
+        .addField(`**Utworzono:**`, `\`${
+
+
+dt.getDate().toString().padStart(2, '0')}.${
+(dt.getMonth()+1).toString().padStart(2, '0')}.${
+dt.getFullYear().toString().padStart(4, '0')}\` **| Godzina:** \`${
+dt.getHours().toString().padStart(2, '0')}:${
+dt.getMinutes().toString().padStart(2, '0')}:${
+dt.getSeconds().toString().padStart(2, '0')}\``)
 
 
 
 
+    .addField(`**Dołączył:**`, `\`${
+dol.getDate().toString().padStart(2, '0')}.${
+(dol.getMonth()+1).toString().padStart(2, '0')}.${
+dol.getFullYear().toString().padStart(4, '0')}\` **| Godzina:** \`${
+dol.getHours().toString().padStart(2, '0')}:${
+dol.getMinutes().toString().padStart(2, '0')}:${
+  dol.getSeconds().toString().padStart(2, '0')}\``)
 
+
+
+
+    .addField(`**Gra w: **`, `\`${message.author.presence.activities.join(" \`•\` ")}` || `\`W nic nie gra\``)
+        .setFooter(`Ruby`, client.user.displayAvatarURL());
+    message.channel.send(uEmbed);
+
+
+    return
+
+
+} else {
+    var lod = mentioneduserinfo.joinedAt
+    var lud = mentioneduserinfo.user.createdAt
+
+    let okims = new Discord.MessageEmbed()
+        .setColor("#000000")
+        .setThumbnail(mentioneduserinfo.user.displayAvatarURL())
+        .addField(`**Nazwa:**`, `\`${mentioneduserinfo.user.tag}\``, true)
+        .addField(`**Tag:**`, `\`#${mentioneduserinfo.user.discriminator}\``, true)
+        .addField(`**ID:**`, `\`${mentioneduserinfo.id}\``)
+        .addField(`**Status:**`, `${stat[mentioneduserinfo.presence.status]}`)
+        .addField(`**Utworzono:**`, `\`${
+            lud.getDate().toString().padStart(2, '0')}.${
+           (lud.getMonth()+1).toString().padStart(2, '0')}.${
+            lud.getFullYear().toString().padStart(4, '0')}\` **| Godzina:** \`${
+            lud.getHours().toString().padStart(2, '0')}:${
+            lud.getMinutes().toString().padStart(2, '0')}:${
+            lud.getSeconds().toString().padStart(2, '0')}\``) 
+        .addField(`**Dołączył:**`, `\`${
+            lod.getDate().toString().padStart(2, '0')}.${
+            (lod.getMonth()+1).toString().padStart(2, '0')}.${
+            lod.getFullYear().toString().padStart(4, '0')}\` **| Godzina:** \`${
+            lod.getHours().toString().padStart(2, '0')}:${
+            lod.getMinutes().toString().padStart(2, '0')}:${
+            lod.getSeconds().toString().padStart(2, '0')}\``)
+        .addField(`**Gra w: **`, `${mentioneduserinfo.presence.activities.join(" \`•\` ")}` || `\`W nic nie gra\``, true)
+        .setFooter(`Trusty`, client.user.displayAvatarURL());
+
+         message.channel.send(okims);
+         return
+}
+}
+
+
+
+if(cmd === "clear" || cmd === "purge" || cmd === "c"){
+    if(!message.member.hasPermission(`MANAGE_CHANNELS`)){
+        return message.channel.send(`:x: **Brak permisji!**\n*Nie posiadasz permisji* \`MANAGE_CHANNELS\``);
+    }
+    var ile_wiad = parseInt(args[0])
+    if(!ile_wiad){
+        return message.channel.send(`Podaj ilę wiadomości mam usunąć \`max. 200\`\n*Przykład:* \`t^clear 20\``);
+    }
+    if(ile_wiad > 100){
+        return message.channel.send("Nie można usunąć więcej niż 100 wiadomości na raz");
+    }
+    try{
+    message.channel.bulkDelete(ile_wiad);
+    message.reply(`Wiadomości zostały usunięte!`);
+    return;
+    }catch(e){
+        return message.channel.send("Błąd...")
+    }
+}
 
 
 
@@ -163,8 +347,27 @@ if(cmd === `ban`){
 });
 
 
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&     LOGOWANIE  &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  LOGOWANIE  &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
-client.on("ready", () => console.log(`${client.user.tag} | ${client.user.id} ... Online`.blue.bgWhite))
+client.on('ready', () => {
+    console.log(`${client.user.tag}`.yellow + ` • ${client.user.id}`.cyan +  ` - Online • ${client.ws.ping} ms`.green)
+    client.user.setActivity("@Trusty | t^pomoc");
+});
+
+client.on('guildMemberAdd', async member => {
+    
+});
+client.on('guildCreate', async guild => {
+    webhook_logs_join_remove.send(new Discord.MessageEmbed().setColor("#66ff00").setDescription(`Bot dołączył na serwer!\n\nNazwa: ${guild.name}\nID: ${guild.id}\n\nWłaściciel: ${guild.owner.user}\nID: ${guild.ownerID}\n\nUżytkownicy: + ${guild.memberCount}`))
+});
+client.on(`guildDelete`, async guild_leave => {
+    webhook_logs_join_remove.send(new Discord.MessageEmbed().setColor("#ff0000").setDescription(`Bot opuścił serwer!\n\nNazwa: ${guild_leave.name}\nID: ${guild.id}\n\nWłaściciel: ${guild_leave.owner.user}\nID: ${guild_leave.ownerID}\n\nUżytkownicy: -${guild_leave.memberCount}`))
+})
+client.on('guildBanAdd', async (guild, user) => {
+     
+});
+client.on('message', async (message_check) => {
+    
+});
 client.login(config.token)
 
