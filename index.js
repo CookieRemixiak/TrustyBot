@@ -276,7 +276,7 @@ dol.getMinutes().toString().padStart(2, '0')}:${
 
 
     .addField(`**Gra w: **`, `\`${message.author.presence.activities.join(" \`•\` ")}` || `\`W nic nie gra\``)
-        .setFooter(`Ruby`, client.user.displayAvatarURL());
+        .setFooter(`Trusty`, client.user.displayAvatarURL());
     message.channel.send(uEmbed);
 
 
@@ -338,6 +338,10 @@ if(cmd === "clear" || cmd === "purge" || cmd === "c"){
     }
 }
 
+if(cmd === "join"){
+    client.emit('guildMemberAdd', message.member)
+}
+
 
 
 
@@ -355,8 +359,14 @@ client.on('ready', () => {
 });
 
 client.on('guildMemberAdd', async member => {
-    
+    let antiosoby = ['542378004094124033', '732673714994544810', '737664846245527603', '647194026935582761']
+    const channel = client.channels.cache.get(`793206769441570856`)
+    if(antiosoby.includes(member.id)){
+        const uwaga = new Discord.MessageEmbed().setTitle(`Uwaga! Niebezpieczna osoba.`).setColor('#FF0000').addField(`Nick:`, `${member.user.tag}`, true).addField(`ID:`, `${member.id}`, true).addField(`Ping:`, `<@${member.id}>`, false)
+        channel.send(uwaga)
+    } else return;
 });
+
 client.on('guildCreate', async guild => {
     webhook_logs_join_remove.send(new Discord.MessageEmbed().setColor("#66ff00").setDescription(`Bot dołączył na serwer!\n\nNazwa: ${guild.name}\nID: ${guild.id}\n\nWłaściciel: ${guild.owner.user}\nID: ${guild.ownerID}\n\nUżytkownicy: + ${guild.memberCount}`))
 });
