@@ -6,6 +6,7 @@ const colors = require("colors");
 const prefix = config.prefix;
 const sql = require("mysql");
 
+
 // &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& WENHOOKI  &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 
@@ -27,18 +28,36 @@ const args = message.content.slice(prefix.length).trim().split(/ +/g);
 const cmd = args.shift().toLowerCase();
 
 
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  KOMENDY &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& KOMENDY &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+
+
+if (message.mentions.has(client.user) && !message.mentions.everyone) {
+    const wzmianka = new Discord.MessageEmbed()
+    .setAuthor(`Wykryto oznaczenie!`, client.user.displayAvatarURL())
+    .setColor("#00ff99")
+    .addField('Prefix: ', '\`t^\`', true)
+    .addField('Ping: ', Math.round(client.ws.ping), true)
+    .setThumbnail(client.user.displayAvatarURL())
+    .setTimestamp()
+    .setFooter(`Trusty`)
+    message.channel.send(wzmianka);
+  return;
+}
+
+
+
 
 
 if(cmd == 'ping' || cmd == `pong`) {
-return message.channel.send("Pong: " + client.ws.ping + "ms");
+return message.channel.send(":ping_pong: Pong: " + client.ws.ping + "ms");
 }
 
 
 
 if(cmd === `invite` || cmd == `zaproś` || cmd == `zapros`){
 var embed_zapro = new Discord.MessageEmbed()
-.setColor("cyan")
+.setColor("#00ff99")
 .setAuthor(`Tworzenie zaproszenia...`, client.user.displayAvatarURL())
 .setThumbnail(client.user.displayAvatarURL())
 var opcja = (args[0])
@@ -56,19 +75,19 @@ if(opcja == "serwer"){
 
 
 
-if(cmd === `pomoc` || cmd === `help` || cmd === `h`){
+if(cmd === `pomoc` || cmd === `help` || cmd === `h` || cmd === `p`){
     var embed_pomoc = new Discord.MessageEmbed()
     .setAuthor(`Komendy`, client.user.displayAvatarURL())
-    .setColor(`#ff0000`)
+    .setColor("#00ff99")
     .setThumbnail(client.user.displayAvatarURL())
     .setTimestamp()
     .setFooter(`Trusty`)
     var opcja1 = (args[0])
     if(!opcja1){
-        return message.channel.send(embed_pomoc.setDescription(`\n> \`Podaj kategorię\`\nDostępne: **\`pomoc\`, \`ustawienia\`, \`info\`, \`mod\`**`))
+        return message.channel.send(embed_pomoc.setDescription(`\n> **Podaj kategorię** \nDostępne:`).addField('⚙ | Support', 'Komendy dotyczące bota!', false).addField('🛠️ | Ustawienia', 'Tutaj skonfigurujesz kanały i wiadomości!', false).addField('🔨 | Mod', 'Tutaj znajdziesz komendy moderacyjne!', false).addField('ℹ️ | Info', 'Przydatne do sprawdzania kont! (informacje o bocie, serwerze, użytkowników)', false))
     }
-    if(opcja1 === "pomoc"){
-        return message.channel.send(embed_pomoc.setDescription(`\`\`\`Komendy Pomocy\`\`\`\n\`▪\` invite\n\`▪\` report\n\n\`\`\` \`\`\``, false))
+    if(opcja1 === "support"){
+        return message.channel.send(embed_pomoc.setDescription(`\`\`\`Komendy Support\`\`\`\n\`▪\` invite\n\`▪\` report\n\n\`\`\` \`\`\``, false))
     }
     if(opcja1 === "ustawienia"){
         return message.channel.send(embed_pomoc.setDescription(`\`\`\`Komendy Konfiguracyjne\`\`\`\n\`▪\` ustaw\n\`▪\` config\n\n\`\`\` \`\`\``, false))
@@ -83,17 +102,17 @@ if(cmd === `pomoc` || cmd === `help` || cmd === `h`){
 
 
 
-if(cmd === `report`){
+if(cmd === `helpop`){
 
     var embed_report = new Discord.MessageEmbed()
-/*
+
     if(message.guild.ownerID !== message.author.id){
         return message.channel.send(embed_report.setDescription(`:x: **Brak permisji!**\n*Nie posiadasz permisji* \`OWNER\``).setFooter(`Trusty ▪ Błąd`).setColor(`#00ffff`))
     }
-*/
+
     var oznaczona_osoba = message.mentions.members.first();
     if(!oznaczona_osoba){
-        return message.channel.send(`:x: **Oznacz osobę!**\nOznacz osobę, którą chcesz zgłosić\n\nPrzykład: \`t^report @Remixiak\``)
+        return message.channel.send(`:x: **Oznacz osobę!**\nOznacz osobę, którą chcesz zgłosić\n\nPrzykład: \`t^report @Remixiak powód\``)
     }
     var powod = args.slice(1).join(" ")
     if(!powod){
@@ -180,7 +199,7 @@ if(cmd === `serwer` || cmd === "server" || cmd === "serwer-info"){
       var boty = message.guild.members.cache.filter(member => member.user.bot).size;
       var serwus = message.guild.createdAt
       var serwerEmbed = new Discord.MessageEmbed()       
-          .setColor("cyan")
+      .setColor("#00ff99")
           .setThumbnail(message.guild.iconURL())
           .setAuthor(`Informacje o Serwerze`, client.user.displayAvatarURL())
           .addField(` **Nazwa:**`, `\`${message.guild.name}\``)
@@ -204,6 +223,7 @@ if(cmd === `serwer` || cmd === "server" || cmd === "serwer-info"){
       serwus.getSeconds().toString().padStart(2, '0')}\` `)
       .setFooter(`Trusty`, client.user.displayAvatarURL());
          message.channel.send(serwerEmbed);
+         return;
 }
 
 
@@ -217,6 +237,13 @@ if(cmd === "user" || cmd === "user-info" || cmd === "info"){
     offline: `Offline`
 }
 
+var status = {
+    online: `<:ONLINE:793462116811800596> `,
+    dnd: `<:DND:793462116190781440>`,
+    idle: `<:IDLE:793462116421599282>`,
+    offline: `<:OFFLINE:793462116480450570>`
+}
+
 
 let mentioneduserinfo = message.mentions.members.first() //oznaczony
 if (!mentioneduserinfo) {
@@ -224,15 +251,13 @@ if (!mentioneduserinfo) {
     var dol = message.member.joinedAt //autor doiłączył
 
     let uEmbed = new Discord.MessageEmbed()
-        .setColor("#000000")
+         .setColor("#00ff99")
         .setThumbnail(message.author.displayAvatarURL())
         .addField(`**Nazwa:**`, `\`${message.author.username}\``, true)
         .addField(`**Tag:**`, `\`#${message.author.discriminator}\``, true)
         .addField(`**ID:**`, `\`${message.author.id}\``)
-        .addField(`**Status:**`, `${stat[message.author.presence.status]}`)
+        .addField(`**Status:**`, `${status[message.author.presence.status]} ${stat[message.author.presence.status]}`)
         .addField(`**Utworzono:**`, `\`${
-
-
 dt.getDate().toString().padStart(2, '0')}.${
 (dt.getMonth()+1).toString().padStart(2, '0')}.${
 dt.getFullYear().toString().padStart(4, '0')}\` **| Godzina:** \`${
@@ -254,20 +279,16 @@ dol.getMinutes().toString().padStart(2, '0')}:${
 
 
 
-    .addField(`**Gra w: **`, `\`${message.author.presence.activities.join(" \`•\` ")}\`` || `\`W nic nie gra\``)
+    .addField(`**Gra w: **`, `\`${message.author.presence.activities.join(" \`•\` ")}` || `\`W nic nie gra\``)
         .setFooter(`Ruby`, client.user.displayAvatarURL());
     message.channel.send(uEmbed);
-
-
-    return
-
-
+    return;
 } else {
     var lod = mentioneduserinfo.joinedAt
     var lud = mentioneduserinfo.user.createdAt
 
     let okims = new Discord.MessageEmbed()
-        .setColor("#000000")
+        .setColor("#00ff99")
         .setThumbnail(mentioneduserinfo.user.displayAvatarURL())
         .addField(`**Nazwa:**`, `\`${mentioneduserinfo.user.tag}\``, true)
         .addField(`**Tag:**`, `\`#${mentioneduserinfo.user.discriminator}\``, true)
@@ -288,7 +309,7 @@ dol.getMinutes().toString().padStart(2, '0')}:${
             lod.getMinutes().toString().padStart(2, '0')}:${
             lod.getSeconds().toString().padStart(2, '0')}\``)
         .addField(`**Gra w: **`, `${mentioneduserinfo.presence.activities.join(" \`•\` ")}` || `\`W nic nie gra\``, true)
-        .setFooter(`Ruby`, client.user.displayAvatarURL());
+        .setFooter(`Trusty`, client.user.displayAvatarURL());
 
          message.channel.send(okims);
          return
@@ -301,16 +322,17 @@ if(cmd === "clear" || cmd === "purge" || cmd === "c"){
     if(!message.member.hasPermission(`MANAGE_CHANNELS`)){
         return message.channel.send(`:x: **Brak permisji!**\n*Nie posiadasz permisji* \`MANAGE_CHANNELS\``);
     }
-    var ile_wiad = parseInt(args[0])
+    var ile_wiad = parseInt(args[0]) 
     if(!ile_wiad){
         return message.channel.send(`Podaj ilę wiadomości mam usunąć \`max. 200\`\n*Przykład:* \`t^clear 20\``);
     }
     if(ile_wiad > 100){
         return message.channel.send("Nie można usunąć więcej niż 100 wiadomości na raz");
     }
+
     try{
-    message.channel.bulkDelete(ile_wiad);
-    message.reply(`Wiadomości zostały usunięte!`);
+    const { size } = await message.channel.bulkDelete(ile_wiad);
+    message.reply(`Usunięto ${size} wiadomości!`);
     return;
     }catch(e){
         return message.channel.send("Błąd...")
@@ -319,33 +341,707 @@ if(cmd === "clear" || cmd === "purge" || cmd === "c"){
 
 
 
+if(cmd === "chatguard" || cmd === "cg" || cmd === "chat-guard"){
+
+}
+
+
+if(cmd === "defcon" || "def-con"){
+if(!message.member.hasPermission(`ADMINISTRATOR`)){
+    return message.channel.send("Nie posiadasz permisji \`ADMINISTRATOR\`")
+}
+var lvl = (args[0])
+if(!lvl){
+    return message.channel.send("Podaj poziom weryfikacji serwera jaki chcesz ustawić!\n\`BRAK\`, \`SŁABY\`, \`ŚREDNI\`, \`WYSOKI\`, \`ULTRA\`")
+}
+var set;
+
+if(lvl === `BRAK`){
+set = `NONE`;
+}else if (lvl === `SŁABY`){
+set = `LOW`;
+}else if (lvl === `ŚREDNI`){
+ set = `MEDIUM`;
+}else if (lvl === `WYSOKI`){
+set = `HIGH`;
+}else if (lvl === `ULTRA`){
+set = `VERY_HIGH`;
+}
+
+if(message.guild.verificationLevel === set){
+    return message.channel.send("Nie możesz ustawić tego samego poziomu weryfikacji, ustaw inny!")
+}
+
+try{
+    message.guild.setVerificationLevel(`${set}`);
+    message.reply(`Pomyślnie ustawiono poziom weryfikacji na **${lvl}** **(** \`${set}\` **)**`)
+    return;
+}catch(e){
+    message.reply(`Nie mogę wykonać tej czynności, mam za małe permisje lub ten poziom nie jest możliwy do włączenia dla serwera o tej kategorii`)
+    return;
+}
+}
 
 
 
-   
+
 });
 
 
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&     LOGOWANIE  &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  LOGOWANIE  &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 client.on('ready', () => {
     console.log(`${client.user.tag}`.yellow + ` • ${client.user.id}`.cyan +  ` - Online • ${client.ws.ping} ms`.green)
+    client.user.setActivity("@Trusty | t^pomoc");
 });
 
 client.on('guildMemberAdd', async member => {
     
 });
 client.on('guildCreate', async guild => {
-    webhook_logs_join_remove.send(new Discord.MessageEmbed().setColor("#66ff00").setDescription(`Bot dołączył na serwer!\n\nNazwa: ${guild.name}\nID: ${guild.id}\n\nWłaściciel: ${guild.owner.user}\nID: ${guild.ownerID}\n\nUżytkownicy: + ${guild.memberCount}`))
+    webhook_logs_join_remove.send(new Discord.MessageEmbed().setColor("#00ff99").setDescription(`Bot dołączył na serwer!\n\nNazwa: ${guild.name}\nID: ${guild.id}\n\nWłaściciel: ${guild.owner.user}\nID: ${guild.ownerID}\n\nUżytkownicy: + ${guild.memberCount}`))
 });
 client.on(`guildDelete`, async guild_leave => {
-    webhook_logs_join_remove.send(new Discord.MessageEmbed().setColor("#ff0000").setDescription(`Bot opuścił serwer!\n\nNazwa: ${guild_leave.name}\nID: ${guild.id}\n\nWłaściciel: ${guild_leave.owner.user}\nID: ${guild_leave.ownerID}\n\nUżytkownicy: -${guild_leave.memberCount}`))
+    webhook_logs_join_remove.send(new Discord.MessageEmbed().setColor("#00ff99").setDescription(`Bot opuścił serwer!\n\nNazwa: ${guild_leave.name}\nID: ${guild.id}\n\nWłaściciel: ${guild_leave.owner.user}\nID: ${guild_leave.ownerID}\n\nUżytkownicy: -${guild_leave.memberCount}`))
 })
 client.on('guildBanAdd', async (guild, user) => {
      
 });
 client.on('message', async (message_check) => {
     
+  var n_words = [
+    "chuj",
+    "chuja",
+    "chujek",
+    "chuju",
+    "chujem",
+    "chujnia",
+    "chujowy",
+    "chujowa",
+    "chujowe",
+    "cipa",
+    "cipę",
+    "cipe",
+    "cipą",
+    "cipie",
+    "dojebać",
+    "dojebac",
+    "dojebie",
+    "dojebał",
+    "dojebal",
+    "dojebała",
+    "dojebala",
+    "dojebałem",
+    "dojebalem",
+    "dojebałam",
+    "dojebalam",
+    "dojebię",
+    "dojebie",
+    "dopieprzać",
+    "dopieprzac",
+    "dopierdalać",
+    "dopierdalac",
+    "dopierdala",
+    "dopierdalał",
+    "dopierdalal",
+    "dopierdalała",
+    "dopierdalala",
+    "dopierdoli",
+    "dopierdolił",
+    "dopierdolil",
+    "dopierdolę",
+    "dopierdole",
+    "dopierdoli",
+    "dopierdalający",
+    "dopierdalajacy",
+    "dopierdolić",
+    "dopierdolic",
+    "dupa",
+    "dupie",
+    "dupą",
+    "dupcia",
+    "dupeczka",
+    "dupy",
+    "dupe",
+    "huj",
+    "hujek",
+    "hujnia",
+    "huja",
+    "huje",
+    "hujem",
+    "huju",
+    "jebać",
+    "jebac",
+    "jebał",
+    "jebal",
+    "jebie",
+    "jebią",
+    "jebia",
+    "jebak",
+    "jebaka",
+    "jebal",
+    "jebał",
+    "jebany",
+    "jebane",
+    "jebanka",
+    "jebanko",
+    "jebankiem",
+    "jebanymi",
+    "jebana",
+    "jebanym",
+    "jebanej",
+    "jebaną",
+    "jebana",
+    "jebani",
+    "jebanych",
+    "jebanymi",
+    "jebcie",
+    "jebiący",
+    "jebiacy",
+    "jebiąca",
+    "jebiaca",
+    "jebiącego",
+    "jebiacego",
+    "jebiącej",
+    "jebiacej",
+    "jebia",
+    "jebią",
+    "jebie",
+    "jebię",
+    "jebliwy",
+    "jebnąć",
+    "jebnac",
+    "jebnąc",
+    "jebnać",
+    "jebnął",
+    "jebnal",
+    "jebną",
+    "jebna",
+    "jebnęła",
+    "jebnela",
+    "jebnie",
+    "jebnij",
+    "jebut",
+    "koorwa",
+    "kórwa",
+    "kurestwo",
+    "kurew",
+    "kurewski",
+    "kurewska",
+    "kurewskiej",
+    "kurewską",
+    "kurewska",
+    "kurewsko",
+    "kurewstwo",
+    "kurwa",
+    "kurwaa",
+    "kurwami",
+    "kurwą",
+    "kurwe",
+    "kurwę",
+    "kurwie",
+    "kurwiska",
+    "kurwo",
+    "kurwy",
+    "kurwach",
+    "kurwami",
+    "kurewski",
+    "kurwiarz",
+    "kurwiący",
+    "kurwica",
+    "kurwić",
+    "kurwic",
+    "kurwidołek",
+    "kurwik",
+    "kurwiki",
+    "kurwiszcze",
+    "kurwiszon",
+    "kurwiszona",
+    "kurwiszonem",
+    "kurwiszony",
+    "kutas",
+    "kutasa",
+    "kutasie",
+    "kutasem",
+    "kutasy",
+    "kutasów",
+    "kutasow",
+    "kutasach",
+    "kutasami",
+    "matkojebca",
+    "matkojebcy",
+    "matkojebcą",
+    "matkojebca",
+    "matkojebcami",
+    "matkojebcach",
+    "nabarłożyć",
+    "najebać",
+    "najebac",
+    "najebał",
+    "najebal",
+    "najebała",
+    "najebala",
+    "najebane",
+    "najebany",
+    "najebaną",
+    "najebana",
+    "najebie",
+    "najebią",
+    "najebia",
+    "naopierdalać",
+    "naopierdalac",
+    "naopierdalał",
+    "naopierdalal",
+    "naopierdalała",
+    "naopierdalala",
+    "naopierdalała",
+    "napierdalać",
+    "napierdalac",
+    "napierdalający",
+    "napierdalajacy",
+    "napierdolić",
+    "napierdolic",
+    "nawpierdalać",
+    "nawpierdalac",
+    "nawpierdalał",
+    "nawpierdalal",
+    "nawpierdalała",
+    "nawpierdalala",
+    "obsrywać",
+    "obsrywac",
+    "obsrywający",
+    "obsrywajacy",
+    "odpieprzać",
+    "odpieprzac",
+    "odpieprzy",
+    "odpieprzył",
+    "odpieprzyl",
+    "odpieprzyła",
+    "odpieprzyla",
+    "odpierdalać",
+    "odpierdalac",
+    "odpierdol",
+    "odpierdolił",
+    "odpierdolil",
+    "odpierdoliła",
+    "odpierdolila",
+    "odpierdoli",
+    "odpierdalający",
+    "odpierdalajacy",
+    "odpierdalająca",
+    "odpierdalajaca",
+    "odpierdolić",
+    "odpierdolic",
+    "odpierdoli",
+    "odpierdolił",
+    "opieprzający",
+    "opierdalać",
+    "opierdalac",
+    "opierdala",
+    "opierdalający",
+    "opierdalajacy",
+    "opierdol",
+    "opierdolić",
+    "opierdolic",
+    "opierdoli",
+    "opierdolą",
+    "opierdola",
+    "piczka",
+    "pieprznięty",
+    "pieprzniety",
+    "pieprzony",
+    "pierdel",
+    "pierdlu",
+    "pierdolą",
+    "pierdola",
+    "pierdolący",
+    "pierdolacy",
+    "pierdoląca",
+    "pierdolaca",
+    "pierdol",
+    "pierdole",
+    "pierdolenie",
+    "pierdoleniem",
+    "pierdoleniu",
+    "pierdolę",
+    "pierdolec",
+    "pierdola",
+    "pierdolą",
+    "pierdolić",
+    "pierdolicie",
+    "pierdolic",
+    "pierdolił",
+    "pierdolil",
+    "pierdoliła",
+    "pierdolila",
+    "pierdoli",
+    "pierdolnięty",
+    "pierdolniety",
+    "pierdolisz",
+    "pierdolnąć",
+    "pierdolnac",
+    "pierdolnął",
+    "pierdolnal",
+    "pierdolnęła",
+    "pierdolnela",
+    "pierdolnie",
+    "pierdolnięty",
+    "pierdolnij",
+    "pierdolnik",
+    "pierdolona",
+    "pierdolone",
+    "pierdolony",
+    "pierdołki",
+    "pierdzący",
+    "pierdzieć",
+    "pierdziec",
+    "pizda",
+    "pizdą",
+    "pizde",
+    "pizdę",
+    "piździe",
+    "pizdzie",
+    "pizdnąć",
+    "pizdnac",
+    "pizdu",
+    "podpierdalać",
+    "podpierdalac",
+    "podpierdala",
+    "podpierdalający",
+    "podpierdalajacy",
+    "podpierdolić",
+    "podpierdolic",
+    "podpierdoli",
+    "pojeb",
+    "pojeba",
+    "pojebami",
+    "pojebani",
+    "pojebanego",
+    "pojebanemu",
+    "pojebani",
+    "pojebany",
+    "pojebanych",
+    "pojebanym",
+    "pojebanymi",
+    "pojebem",
+    "pojebać",
+    "pojebac",
+    "pojebalo",
+    "popierdala",
+    "popierdalac",
+    "popierdalać",
+    "popierdolić",
+    "popierdolic",
+    "popierdoli",
+    "popierdolonego",
+    "popierdolonemu",
+    "popierdolonym",
+    "popierdolone",
+    "popierdoleni",
+    "popierdolony",
+    "porozpierdalać",
+    "porozpierdala",
+    "porozpierdalac",
+    "poruchac",
+    "poruchać",
+    "przejebać",
+    "przejebane",
+    "przejebac",
+    "przyjebali",
+    "przepierdalać",
+    "przepierdalac",
+    "przepierdala",
+    "przepierdalający",
+    "przepierdalajacy",
+    "przepierdalająca",
+    "przepierdalajaca",
+    "przepierdolić",
+    "przepierdolic",
+    "przyjebać",
+    "przyjebac",
+    "przyjebie",
+    "przyjebała",
+    "przyjebala",
+    "przyjebał",
+    "przyjebal",
+    "przypieprzać",
+    "przypieprzac",
+    "przypieprzający",
+    "przypieprzajacy",
+    "przypieprzająca",
+    "przypieprzajaca",
+    "przypierdalać",
+    "przypierdalac",
+    "przypierdala",
+    "przypierdoli",
+    "przypierdalający",
+    "przypierdalajacy",
+    "przypierdolić",
+    "przypierdolic",
+    "qrwa",
+    "rozjebać",
+    "rozjebac",
+    "rozjebie",
+    "rozjebała",
+    "rozjebią",
+    "rozpierdalać",
+    "rozpierdalac",
+    "rozpierdala",
+    "rozpierdolić",
+    "rozpierdolic",
+    "rozpierdole",
+    "rozpierdoli",
+    "rozpierducha",
+    "skurwić",
+    "skurwiel",
+    "skurwiela",
+    "skurwielem",
+    "skurwielu",
+    "skurwysyn",
+    "skurwysynów",
+    "skurwysynow",
+    "skurwysyna",
+    "skurwysynem",
+    "skurwysynu",
+    "skurwysyny",
+    "skurwysyński",
+    "skurwysynski",
+    "skurwysyństwo",
+    "skurwysynstwo",
+    "spieprzać",
+    "spieprzac",
+    "spieprza",
+    "spieprzaj",
+    "spieprzajcie",
+    "spieprzają",
+    "spieprzaja",
+    "spieprzający",
+    "spieprzajacy",
+    "spieprzająca",
+    "spieprzajaca",
+    "spierdalać",
+    "spierdalac",
+    "spierdala",
+    "spierdalał",
+    "spierdalała",
+    "spierdalal",
+    "spierdalalcie",
+    "spierdalala",
+    "spierdalający",
+    "spierdalajacy",
+    "spierdolić",
+    "spierdolic",
+    "spierdoli",
+    "spierdoliła",
+    "spierdoliło",
+    "spierdolą",
+    "spierdola",
+    "srać",
+    "srac",
+    "srający",
+    "srajacy",
+    "srając",
+    "srajac",
+    "sraj",
+    "sukinsyn",
+    "sukinsyny",
+    "sukinsynom",
+    "sukinsynowi",
+    "sukinsynów",
+    "sukinsynow",
+    "śmierdziel",
+    "udupić",
+    "ujebać",
+    "ujebac",
+    "ujebał",
+    "ujebal",
+    "ujebana",
+    "ujebany",
+    "ujebie",
+    "ujebała",
+    "ujebala",
+    "upierdalać",
+    "upierdalac",
+    "upierdala",
+    "upierdoli",
+    "upierdolić",
+    "upierdolic",
+    "upierdoli",
+    "upierdolą",
+    "upierdola",
+    "upierdoleni",
+    "wjebać",
+    "wjebac",
+    "wjebie",
+    "wjebią",
+    "wjebia",
+    "wjebiemy",
+    "wjebiecie",
+    "wkurwiać",
+    "wkurwiac",
+    "wkurwi",
+    "wkurwia",
+    "wkurwiał",
+    "wkurwial",
+    "wkurwiający",
+    "wkurwiajacy",
+    "wkurwiająca",
+    "wkurwiajaca",
+    "wkurwić",
+    "wkurwic",
+    "wkurwi",
+    "wkurwiacie",
+    "wkurwiają",
+    "wkurwiali",
+    "wkurwią",
+    "wkurwia",
+    "wkurwimy",
+    "wkurwicie",
+    "wkurwiacie",
+    "wkurwić",
+    "wkurwic",
+    "wkurwia",
+    "wpierdalać",
+    "wpierdalac",
+    "wpierdalający",
+    "wpierdalajacy",
+    "wpierdol",
+    "wpierdolić",
+    "wpierdolic",
+    "wpizdu",
+    "wyjebać",
+    "wyjebac",
+    "wyjebali",
+    "wyjebał",
+    "wyjebac",
+    "wyjebała",
+    "wyjebały",
+    "wyjebie",
+    "wyjebią",
+    "wyjebia",
+    "wyjebiesz",
+    "wyjebie",
+    "wyjebiecie",
+    "wyjebiemy",
+    "wypieprzać",
+    "wypieprzac",
+    "wypieprza",
+    "wypieprzał",
+    "wypieprzal",
+    "wypieprzała",
+    "wypieprzala",
+    "wypieprzy",
+    "wypieprzyła",
+    "wypieprzyla",
+    "wypieprzył",
+    "wypieprzyl",
+    "wypierdal",
+    "wypierdalać",
+    "wypierdalac",
+    "wypierdala",
+    "wypierdalaj",
+    "wypierdalał",
+    "wypierdalal",
+    "wypierdalała",
+    "wypierdalala",
+    "wypierdalać",
+    "wypierdolić",
+    "wypierdolic",
+    "wypierdoli",
+    "wypierdolimy",
+    "wypierdolicie",
+    "wypierdolą",
+    "wypierdola",
+    "wypierdolili",
+    "wypierdolił",
+    "wypierdolil",
+    "wypierdoliła",
+    "wypierdolila",
+    "zajebać",
+    "zajebac",
+    "zajebie",
+    "zajebią",
+    "zajebia",
+    "zajebiał",
+    "zajebial",
+    "zajebała",
+    "zajebiala",
+    "zajebali",
+    "zajebana",
+    "zajebani",
+    "zajebane",
+    "zajebany",
+    "zajebanych",
+    "zajebanym",
+    "zajebanymi",
+    "zajebiste",
+    "zajebisty",
+    "zajebistych",
+    "zajebista",
+    "zajebistym",
+    "zajebistymi",
+    "zajebiście",
+    "zajebiscie",
+    "zapieprzyć",
+    "zapieprzyc",
+    "zapieprzy",
+    "zapieprzył",
+    "zapieprzyl",
+    "zapieprzyła",
+    "zapieprzyla",
+    "zapieprzą",
+    "zapieprza",
+    "zapieprzy",
+    "zapieprzymy",
+    "zapieprzycie",
+    "zapieprzysz",
+    "zapierdala",
+    "zapierdalać",
+    "zapierdalac",
+    "zapierdalaja",
+    "zapierdalał",
+    "zapierdalaj",
+    "zapierdalajcie",
+    "zapierdalała",
+    "zapierdalala",
+    "zapierdalali",
+    "zapierdalający",
+    "zapierdalajacy",
+    "zapierdolić",
+    "zapierdolic",
+    "zapierdoli",
+    "zapierdolił",
+    "zapierdolil",
+    "zapierdoliła",
+    "zapierdolila",
+    "zapierdolą",
+    "zapierdola",
+    "zapierniczać",
+    "zapierniczający",
+    "zasrać",
+    "zasranym",
+    "zasrywać",
+    "zasrywający",
+    "zesrywać",
+    "zesrywający",
+    "zjebać",
+    "zjebac",
+    "zjebał",
+    "zjebal",
+    "zjebała",
+    "zjebala",
+    "zjebana",
+    "zjebią",
+    "zjebali",
+    "zjeby"
+  ];
+
+  for (var i = 0; i < n_words.length; i++) {
+    if (message_check.content.includes(n_words[i])) {
+      message_check.delete();
+      message_check.channel.send(new Discord.MessageEmbed().setColor(`#ff0000`).setAuthor("ChatGuard", client.user.displayAvatarURL({dynamic:true})).addField(`<:ban:793844572974612490> **Autor**`, `> \`${message_check.author.tag}\``, true).addField(`<a:annoucement:793844443605237781> **ID:**`, `> \`${message_check.author.id}\``, true).addField(`<a:mute:793843495764623361> **Kanał**`, `${message_check.channel}`, true).addField(`Wiadomość`, `\`\`\`yaml\n${message_check.content}\n\`\`\``))
+      return;
+    }
+  }
 });
 client.login(config.token)
-
