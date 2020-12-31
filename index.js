@@ -32,7 +32,7 @@ const cmd = args.shift().toLowerCase();
 
 
 
-if (msg.content === `<@!${client.user.id}>` || msg.content === `<@${client.user.id}>`) {
+if (message.content === `<@!${client.user.id}>` || message.content === `<@${client.user.id}>`) {
 const wzmianka = new Discord.MessageEmbed()
     .setAuthor(`Wykryto oznaczenie!`, client.user.displayAvatarURL())
     .setColor("#00ff99")
