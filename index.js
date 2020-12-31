@@ -32,20 +32,6 @@ const cmd = args.shift().toLowerCase();
 
 
 
-if (message.content === `<@!${client.user.id}>` || message.content === `<@${client.user.id}>`) {
-const wzmianka = new Discord.MessageEmbed()
-    .setAuthor(`Wykryto oznaczenie!`, client.user.displayAvatarURL())
-    .setColor("#00ff99")
-    .addField('Prefix: ', '\`t^\`', true)
-    .addField('Ping: ', Math.round(client.ws.ping), true)
-    .setThumbnail(client.user.displayAvatarURL())
-    .setTimestamp()
-    .setFooter(`Trusty`)
-      return message.channel.send(wzmianka)
-}
-
-
-
 
 
 if(cmd == 'ping' || cmd == `pong`) {
@@ -1043,4 +1029,20 @@ client.on('message', async (message_check) => {
     }
   }
 });
+
+client.on("message", async message => {
+    if (message.content === `<@!${client.user.id}>` || message.content === `<@${client.user.id}>`) {
+        const oznacznie = new Discord.MessageEmbed()
+        .setAuthor(`Wykryto oznaczenie!`, client.user.displayAvatarURL())
+        .setColor("#00ff99")
+        .addField('Prefix: ', '\`t^\`', true)
+        .addField('Ping: ', Math.round(client.ws.ping), true)
+        .setThumbnail(client.user.displayAvatarURL())
+        .setTimestamp()
+        .setFooter(`Trusty`)
+       return message.channel.send(oznacznie)
+    }
+})
+
+    
 client.login(config.token)
