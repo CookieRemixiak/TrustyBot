@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Remixiak, Toshinori",
+  "author": "Remixiak, Toshinori, Hamish",
   "license": "ISC",
   "dependencies": {
     "colors": "^1.4.0",
