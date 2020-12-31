@@ -32,8 +32,8 @@ const cmd = args.shift().toLowerCase();
 
 
 
-if (message.mentions.has(client.user) && !message.mentions.everyone) {
-    const wzmianka = new Discord.MessageEmbed()
+if (msg.content === `<@!${client.user.id}>` || msg.content === `<@${client.user.id}>`) {
+const wzmianka = new Discord.MessageEmbed()
     .setAuthor(`Wykryto oznaczenie!`, client.user.displayAvatarURL())
     .setColor("#00ff99")
     .addField('Prefix: ', '\`t^\`', true)
@@ -41,8 +41,7 @@ if (message.mentions.has(client.user) && !message.mentions.everyone) {
     .setThumbnail(client.user.displayAvatarURL())
     .setTimestamp()
     .setFooter(`Trusty`)
-    message.channel.send(wzmianka);
-  return;
+      return message.channel.send(wzmianka)
 }
 
 
