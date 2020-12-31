@@ -1,41 +1,17 @@
 {
-  "name": "TrustyBot",
+  "name": "trusty",
   "version": "1.0.0",
-  "description": "",
+  "description": "Bot który zabezpieczy Twój serwer Discord",
   "main": "index.js",
-  "dependencies": {
-    "@discordjs/collection": "^0.1.6",
-    "@discordjs/form-data": "^3.0.1",
-    "abort-controller": "^3.0.0",
-    "asynckit": "^0.4.0",
-    "colors": "^1.4.0",
-    "combined-stream": "^1.0.8",
-    "delayed-stream": "^1.0.0",
-    "discord.js": "^12.5.1",
-    "event-target-shim": "^5.0.1",
-    "form-data": "^3.0.0",
-    "fs": "^0.0.1-security",
-    "mime-db": "^1.45.0",
-    "mime-types": "^2.1.27",
-    "mysql": "^2.18.1",
-    "node-fetch": "^2.6.1",
-    "prism-media": "^1.2.3",
-    "setimmediate": "^1.0.5",
-    "ws": "^7.4.1"
-  },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/CookieRemixiak/TrustyBot.git"
-  },
-  "keywords": [],
-  "author": "",
+  "author": "Remixiak, Toshinori",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/CookieRemixiak/TrustyBot/issues"
-  },
-  "homepage": "https://github.com/CookieRemixiak/TrustyBot#readme"
+  "dependencies": {
+    "colors": "^1.4.0",
+    "discord.js": "^12.5.1",
+    "fs": "0.0.1-security",
+    "mysql": "^2.18.1"
+  }
 }
