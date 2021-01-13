@@ -54,6 +54,7 @@ const cmd = args.shift().toLowerCase();
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& KOMENDY &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 
+
 if(message.mentions.has(client.user) && !message.mentions.everyone && !message.content.length > 1){
     return message.channel.send("Hej! Odpowiedziałem w ciągu: " + client.ws.ping + "\n" + "Moje komendy [t^pomoc](https://trustybot.xyz/join), zaproś mnie [t^invite bot](https://trustybot.xyz/bot)")
 }
@@ -1710,7 +1711,6 @@ client.on('message', async (message_check) => {
   }
 });
 
-
 client.on('message', async (msg_invite) => {
     
     if(msg_invite.author.bot) return;
@@ -1758,4 +1758,21 @@ client.on('message', async (msg_invite) => {
   
 });
 
+
+client.on("message", async message => {
+    if (message.content === `<@!${client.user.id}>` || message.content === `<@${client.user.id}>`) {
+        const oznacznie = new Discord.MessageEmbed()
+        .setAuthor(`Wykryto oznaczenie!`, client.user.displayAvatarURL())
+        .setColor("#00ff99")
+        .addField('Prefix: ', '\`t^\`', true)
+        .addField('Ping: ', Math.round(client.ws.ping), true)
+        .setThumbnail(client.user.displayAvatarURL())
+        .setTimestamp()
+        .setFooter(`Trusty`)
+       return message.channel.send(oznacznie)
+    }
+})
+
+    
 client.login(config.token)
+
