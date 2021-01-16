@@ -136,7 +136,7 @@ if(cmd === `helpop`){
 }
 
 if(cmd === "eval"){
-    if(message.author.id != "456343371720425473"){
+    if(message.author.id != config.devs){
         return;
     }
 
@@ -1758,6 +1758,66 @@ client.on('message', async (msg_invite) => {
   
 });
 
+
+client.on("channelCreate", function(channel){
+    console.log(`Stworzono kanał: ${channel}`);
+});
+
+client.on("channelDelete", function(channel){
+    console.log(`Usunięto kanał: ${channel}`);
+});
+
+client.on("emojiCreate", function(emoji){
+    console.log(`Stworzono emotke: ${emoji}`);
+});
+
+client.on("emojiDelete", function(emoji){
+    console.log(`Usunięto emotke \`${emoji}\``);
+});
+
+client.on("emojiUpdate", function(oldEmoji, newEmoji){
+    console.log(`Zedytowano emoji: ${oldEmoji} na ${newEmoji}`);
+});
+
+client.on("messageDelete", function(message){
+    console.log(`Usunięto wiadomość -> ${message}`);
+});
+
+client.on("messageDeleteBulk", function(messages){
+    console.log(`Usunięto wiadomości -> ${messages}`);
+});
+
+client.on("messageReactionAdd", function(messageReaction, user){
+    console.log(`${user} dał reakcje ${messageReaction}`);
+});
+
+client.on("messageReactionRemove", function(messageReaction, user){
+    console.log(`${user} usunął reakcje ${messageReaction}`);
+});
+
+client.on("messageReactionRemoveAll", function(message){
+    console.error(`Usunięto wszystkie reakcje z wiadmości (${message})`);
+});
+
+client.on("messageUpdate", function(oldMessage, newMessage){
+    console.log(`Zedytowano wiadomość z ${oldMessage} na ${newMessage}`);
+});
+
+client.on("roleCreate", function(role){
+    console.error(`Stworzono role: ${role}`);
+});
+
+client.on("roleDelete", function(role){
+    console.error(`Usunięto role: ${role}`);
+});
+
+client.on("roleUpdate", function(oldRole, newRole){
+    console.error(`Zmieniono role z ${oldRole} na ${newRole}`);
+});
+
+client.on("userUpdate", function(oldUser, newUser){
+    console.log(`Wykryto zmiane dla użytkownika z ${oldUser} na ${newUser}`);
+});
 
 client.on("message", async message => {
     if (message.content === `<@!${client.user.id}>` || message.content === `<@${client.user.id}>`) {
