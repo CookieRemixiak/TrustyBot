@@ -8,6 +8,7 @@ const sql = require("mysql");
 const { inspect } = require('util');
 const express = require("express");
 const app = express();
+const errorembed = new Discord.MessageEmbed().setColor("#cb6a6b").setTitle(`<a:emoji_12:794157906990727170> Error`)
 
 
 
@@ -117,16 +118,16 @@ if(cmd === `helpop`){
     var embed_report = new Discord.MessageEmbed()
 
     if(message.guild.ownerID !== message.author.id){
-        return message.channel.send(embed_report.setDescription(`:x: **Brak permisji!**\n*Nie posiadasz permisji* \`OWNER\``).setFooter(`Trusty ▪ Błąd`).setColor(`#00ffff`))
+        return message.channel.send(errorembed.setDescription(`:x: **Brak permisji!**\n*Nie posiadasz permisji* \`OWNER\``).setFooter(`Trusty ▪ Błąd`).setColor(`#00ffff`))
     }
 
     var oznaczona_osoba = message.mentions.members.first();
     if(!oznaczona_osoba){
-        return message.channel.send(`:x: **Oznacz osobę!**\nOznacz osobę, którą chcesz zgłosić\n\nPrzykład: \`t^report @Remixiak powód\``)
+        return message.channel.send(errorembed.setDescription(`:x: **Oznacz osobę!**\nOznacz osobę, którą chcesz zgłosić\n\nPrzykład: \`t^report @Remixiak powód\``))
     }
     var powod = args.slice(1).join(" ")
     if(!powod){
-        return message.channel.send(`:x: **Podaj powód zgłoszenia**`)
+        return message.channel.send(errorembed.setDescription(`:x: **Podaj powód zgłoszenia**`))
     }
 
     message.channel.send(`${oznaczona_osoba.user} został zgłoszony do administracji bota, dziękujemy za zgłoszenie!`);
@@ -142,7 +143,7 @@ if(cmd === "eval"){
 
     var evaledp = args.slice(0).join(" ");
     if(!evaledp){
-        return message.reply("NAPISZ CO MAM ZROBIĆ TYPIE")
+        return message.channel.send(errorembed.setDescription(`NAPISZ CO MAM ZROBIĆ TYPIE`))
     }
     try {
       var evaled = eval(evaledp);
@@ -175,7 +176,7 @@ if(cmd === `ban` || cmd === `b`){
 
     var powodp = args.slice(1).join(" ");
 
-    if(!powodp) return message.channel.send("Podaj powód bana!")
+    if(!powodp) return message.channel.send(errorembed.setDescription("Podaj powód bana!"))
 
         try{
         do_bana.ban()    
@@ -183,7 +184,7 @@ if(cmd === `ban` || cmd === `b`){
         do_bana.send(`Zostałeś zbanowany na serwerze **\`${message.guild.name}\`**, przez **\`${message.author.tag}\`**\n\nPowód:\n\`\`\`\n${powodp}\n\`\`\``)
         return;
         }catch(e){
-            return message.reply("Błąd podczas nadawania bana, skontaktuj się z administracją bota :|")
+            return message.channel.send(errorembed.setDescription("Błąd podczas nadawania bana, skontaktuj się z administracją bota :|"))
         }
     }
 }
@@ -191,28 +192,29 @@ if(cmd === `ban` || cmd === `b`){
 
 if(cmd === `kick` || cmd === `k`){
     if(!message.member.hasPermission(`KICK_MEMBERS`)){
-        return message.channel.send(`:x: **Brak permisji!**\n*Nie posiadasz permisji* \`KICK_MEMBERS\``)
+        return message.channel.send(errorembed.setDescription(`:x: **Brak permisji!**\n*Nie posiadasz permisji* \`KICK_MEMBERS\``))
     }
 
     var do_kicka = message.mentions.members.first();
     if(!do_kicka){
-        return message.channel.send(`:x: **Brak oznaczenia**\nOznacz osobę, którą chcesz wyrzucić\nPrzykład: \`t^kick @Toshinori\``)
+        return message.channel.send(errorembed.setDescription(`:x: **Brak oznaczenia**\nOznacz osobę, którą chcesz wyrzucić\nPrzykład: \`t^kick @Toshinori\``))
     }
 
     if(!do_kicka.kickable || do_kicka.id === message.author.id){
-        return message.channel.send(`:x: **Nie można wykonać komendy!**\nOsoba, która została oznaczona nie jest możliwa do wyrzucenia`)
+        return message.channel.send(errorembed.setDescription(`:x: **Nie można wykonać komendy!**\nOsoba, która została oznaczona nie jest możliwa do wyrzucenia`))
     }else{
 
     var reason = args.slice(1).join(" ");
-    if(!reason) return message.channel.send("Podaj powód wyrzucenia!")
-
+    if(!reason) return message.channel.send(errorembed.setDescription("Podaj powód wyrzucenia!"))
+err
     try{
         do_kicka.kick()
         message.channel.send(`**Wyrzucono!**\nModerator: \`${message.author.tag}\`\nWyrzucony: \`${do_kicka.user.tag}\`\nPowód:\n\`\`\`\n${reason}\n\`\`\``)
         do_kicka.send(`Zostałeś wyrzucony z serwera **\`${message.guild.name}\`**, przez **\`${message.author.tag}\`**\n\nPowód:\n\`\`\`\n${reason}\n\`\`\``)
         return;
         }catch(e){
-            return message.reply("Błąd podczas nadawania bana, skontaktuj się z administracją bota :|")
+            message.channel.send(errorembed.setDescription("Błąd podczas nadawania bana, skontaktuj się z administracją bota :|"))
+            console.log(e)
         }
     }
 }
@@ -309,7 +311,7 @@ dol.getMinutes().toString().padStart(2, '0')}:${
 
 
     .addField(`**Gra w: **`, `\`${message.author.presence.activities.join(" \`•\` ")}\`` || `\`W nic nie gra\``)
-        .setFooter(`Ruby`, client.user.displayAvatarURL());
+        .setFooter(`Trusty`, client.user.displayAvatarURL());
     message.channel.send(uEmbed);
     return;
 } else {
@@ -371,14 +373,14 @@ if(cmd === "invites"){
 
 if(cmd === "clear" || cmd === "purge" || cmd === "c"){
     if(!message.member.hasPermission(`MANAGE_CHANNELS`)){
-        return message.channel.send(`:x: **Brak permisji!**\n*Nie posiadasz permisji* \`MANAGE_CHANNELS\``);
+        return message.channel.send(errorembed.setDescription(`:x: **Brak permisji!**\n*Nie posiadasz permisji* \`MANAGE_CHANNELS\``));
     }
     var ile_wiad = parseInt(args[0]) 
     if(!ile_wiad){
-        return message.channel.send(`Podaj ilę wiadomości mam usunąć \`max. 200\`\n*Przykład:* \`t^clear 20\``);
+        return message.channel.send(errorembed.setDescription(`Podaj ilę wiadomości mam usunąć \`max. 200\`\n*Przykład:* \`t^clear 20\``));
     }
     if(ile_wiad > 100){
-        return message.channel.send("Nie można usunąć więcej niż 100 wiadomości na raz");
+        return message.channel.send(errorembed.setDescription("Nie można usunąć więcej niż 100 wiadomości na raz"));
     }
 
     try{
@@ -386,7 +388,8 @@ if(cmd === "clear" || cmd === "purge" || cmd === "c"){
     message.reply(`Usunięto ${size} wiadomości!`);
     return;
     }catch(e){
-        return message.channel.send("Błąd...")
+        message.channel.send(errorembed)
+        console.log(e)
     }
 }
 
@@ -399,11 +402,11 @@ if(cmd === "chatguard" || cmd === "cg" || cmd === "chat-guard"){
 
 if(cmd === "defcon" || cmd === "def-con"){
 if(!message.member.hasPermission(`ADMINISTRATOR`)){
-    return message.channel.send("Nie posiadasz permisji \`ADMINISTRATOR\`")
+    return message.channel.send(errorembed.setDescription("Nie posiadasz permisji \`ADMINISTRATOR\`"))
 }
 var lvl = (args[0])
 if(!lvl){
-    return message.channel.send("Podaj poziom weryfikacji serwera jaki chcesz ustawić!\n\`BRAK\`, \`SŁABY\`, \`ŚREDNI\`, \`WYSOKI\`, \`ULTRA\`")
+    return message.channel.send(errorembed.setDescription("Podaj poziom weryfikacji serwera jaki chcesz ustawić!\n\`BRAK\`, \`SŁABY\`, \`ŚREDNI\`, \`WYSOKI\`, \`ULTRA\`"))
 }
 var set;
 
@@ -420,7 +423,7 @@ set = `VERY_HIGH`;
 }
 
 if(message.guild.verificationLevel === set){
-    return message.channel.send("Nie możesz ustawić tego samego poziomu weryfikacji, ustaw inny!")
+    return message.channel.send(errorembed.setDescription("Nie możesz ustawić tego samego poziomu weryfikacji, ustaw inny!"))
 }
 
 try{
@@ -428,7 +431,7 @@ try{
     message.reply(`Pomyślnie ustawiono poziom weryfikacji na **${lvl}** **(** \`${set}\` **)**`)
     return;
 }catch(e){
-    message.reply(`Nie mogę wykonać tej czynności, mam za małe permisje lub ten poziom nie jest możliwy do włączenia dla serwera o tej kategorii`)
+    message.channel.send(errorembed.setDescription(`Nie mogę wykonać tej czynności, mam za małe permisje lub ten poziom nie jest możliwy do włączenia dla serwera o tej kategorii`))
     return;
 }
 }
@@ -466,7 +469,7 @@ if(cmd === "stats" || cmd === "statystyki" || cmd === "ustawienia"){
             }
         }
         con.query(`SELECT anti_spam FROM config WHERE id_serwera="${message.guild.id}"`, function(err, rows){
-            if(err) return message.reply("Błąd w zapytaniu MYSQL")       
+            if(err) return message.reply(errorembed.setDescription("Błąd w zapytaniu MYSQL"))        
             if(!rows.length){
                 spam = "<a:no:793842558572822529>"
                 }else{
@@ -477,7 +480,7 @@ if(cmd === "stats" || cmd === "statystyki" || cmd === "ustawienia"){
                     }
                 }
             con.query(`SELECT anti_alt FROM config WHERE id_serwera="${message.guild.id}"`, function(err, rows){
-                if(err) return message.reply("Błąd w zapytaniu MYSQL")       
+                if(err) return message.reply(errorembed.setDescription("Błąd w zapytaniu MYSQL"))       
                 if(!rows.length){
                     alt = "<a:no:793842558572822529>"
                     }else{
@@ -488,7 +491,7 @@ if(cmd === "stats" || cmd === "statystyki" || cmd === "ustawienia"){
                         }
                     }
                 con.query(`SELECT captcha FROM config WHERE id_serwera="${message.guild.id}"`, function(err, rows){
-                    if(err) return message.reply("Błąd w zapytaniu MYSQL")       
+                    if(err) return message.reply(errorembed.setDescription("Błąd w zapytaniu MYSQL"))        
                     if(!rows.length){
                         captcha = "<a:no:793842558572822529>"
                         }else{
@@ -499,7 +502,7 @@ if(cmd === "stats" || cmd === "statystyki" || cmd === "ustawienia"){
                             }
                         }
                     con.query(`SELECT emoji FROM config WHERE id_serwera="${message.guild.id}"`, function(err, rows){
-                        if(err) return message.reply("Błąd w zapytaniu MYSQL")       
+                        if(err) return message.reply(errorembed.setDescription("Błąd w zapytaniu MYSQL"))        
                         if(!rows.length){
                             emoji = "<a:no:793842558572822529>"
                             }else{
@@ -510,7 +513,7 @@ if(cmd === "stats" || cmd === "statystyki" || cmd === "ustawienia"){
                                 }
                             }
                         con.query(`SELECT logi FROM config WHERE id_serwera="${message.guild.id}"`, function(err, rows){
-                            if(err) return message.reply("Błąd w zapytaniu MYSQL")       
+                            if(err) return message.reply(errorembed.setDescription("Błąd w zapytaniu MYSQL"))        
                             if(!rows.length){
                                 logi = "<a:no:793842558572822529>"
                                 }else{
@@ -521,7 +524,7 @@ if(cmd === "stats" || cmd === "statystyki" || cmd === "ustawienia"){
                                     }
                                 }
                             con.query(`SELECT alert FROM config WHERE id_serwera="${message.guild.id}"`, function(err, rows){
-                                if(err) return message.reply("Błąd w zapytaniu MYSQL")       
+                                if(err) return message.reply(errorembed.setDescription("Błąd w zapytaniu MYSQL"))     
                                 if(!rows.length){
                                     alert = "<a:no:793842558572822529>"
                                     }else{
@@ -532,7 +535,7 @@ if(cmd === "stats" || cmd === "statystyki" || cmd === "ustawienia"){
                                         }
                                     }
                                 con.query(`SELECT chat_guard FROM config WHERE id_serwera="${message.guild.id}"`, function(err, rows){
-                                    if(err) return message.reply("Błąd w zapytaniu MYSQL")       
+                                    if(err) return message.reply(errorembed.setDescription("Błąd w zapytaniu MYSQL"))        
                                     if(!rows.length){
                                         cg = "<a:no:793842558572822529>"
                                         }else{
@@ -543,7 +546,7 @@ if(cmd === "stats" || cmd === "statystyki" || cmd === "ustawienia"){
                                             }
                                         }
                                     con.query(`SELECT reports FROM config WHERE id_serwera="${message.guild.id}"`, function(err, rows){
-                                        if(err) return message.reply("Błąd w zapytaniu MYSQL")       
+                                        if(err) return message.reply(errorembed.setDescription("Błąd w zapytaniu MYSQL"))        
                                         if(!rows.length){
                                             reps = "<a:no:793842558572822529>"
                                             }else{
