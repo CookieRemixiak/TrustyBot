@@ -592,17 +592,17 @@ if(cmd === "stats" || cmd === "statystyki" || cmd === "ustawienia"){
 
 if(cmd === "ustaw"){
     if(!message.member.hasPermission(`ADMINISTRATOR`)){
-        return message.channel.send("Nie masz permisji \`ADMINISTRATOR\`")
+        return message.channel.send(errorembed.setDescription("Nie masz permisji \`ADMINISTRATOR\`"))
     }
     var option = (args[0])
     if(!option){
-        return message.channel.send("**Dostępne opcje**\n\nreport-channel")
+        return message.channel.send(errorembed.setDescription("**Dostępne opcje**\n\nreport-channel"))
     }
     if(option === "report-channel"){
 
         var kanal = message.mentions.channels.first();
         if(!kanal){
-            return message.channel.send("Oznacz kanał do zgłoszeń")
+            return message.channel.send(errorembed.setDescription("Oznacz kanał do zgłoszeń"))
         }
 
         con.query(`SELECT reports FROM config WHERE config.reports="1" AND config.id_serwera="${message.guild.id}"`, function(err, row){
@@ -630,11 +630,11 @@ if(cmd === "ustaw"){
     }
     if(option === "logi"){
         if(!message.member.hasPermission(`ADMINISTRATOR`)){
-            return message.channel.send("Nie masz permisji \`ADMINISTRATOR\`")
+            return message.channel.send(errorembed.setDescription("Nie masz permisji \`ADMINISTRATOR\`"))
         }
         var kan = message.mentions.channels.first();
         if(!kanal){
-            return message.channel.send("Oznacz kanał do logów")
+            return message.channel.send(errorembed.setDescription("Oznacz kanał do logów"))
         }
         
         con.query(`SELECT logi FROM config WHERE config.logi="1" AND config.id_serwera="${message.guild.id}"`, function(err, row){
@@ -668,12 +668,12 @@ if(cmd === "ustaw"){
 
 if(cmd === "config" || cmd === "konfiguracja"){
     if(!message.member.hasPermission(`ADMINISTRATOR`)){
-        return message.channel.send("Nie masz permisji \`ADMINISTRATOR\`")
+        return message.channel.send(errorembed.setDescription("Nie masz permisji \`ADMINISTRATOR\`"))
     }
 
     var opt = (args[0])
     if(!opt){
-        return message.channel.send("**Dostępne kategorie komendy**\n\nlogi\nzgłoszenia\nchatguard\nantyinvite\nantyspam\nantyalt\nrecaptcha\npowiadomienia")
+        return message.channel.send(errorembed.setDescription("**Dostępne kategorie komendy**\n\nlogi\nzgłoszenia\nchatguard\nantyinvite\nantyspam\nantyalt\nrecaptcha\npowiadomienia"))
     }
     
     if(opt === "logi"){
@@ -681,7 +681,7 @@ if(cmd === "config" || cmd === "konfiguracja"){
         var onf = (args[1])
 
         if(!onf){
-            return message.channel.send("**Dostępne Opcje** \`on / off\`")
+            return message.channel.send(errorembed.setDescription("**Dostępne Opcje** \`on / off\`"))
         }
         if(onf === "on"){
             con.query(`SELECT logi FROM config WHERE id_serwera="${message.guild.id}"`, function(err, row){
@@ -692,7 +692,7 @@ if(cmd === "config" || cmd === "konfiguracja"){
                         return message.channel.send("<a:yes:793842528864174091> **Logi aktywowane**\nUstaw kanał logów \`t^ustaw log-channel <#Kanał>\`")
                     })
                 }else{
-                    return message.channel.send("<a:yes:793842528864174091> **Logi są już aktywowane**")
+                    return message.channel.send(errorembed.setDescription("<a:yes:793842528864174091> **Logi są już aktywowane**"))
                 }
             })
         }else if(onf === "off"){
