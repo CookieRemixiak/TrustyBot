@@ -161,17 +161,17 @@ if(cmd === "eval"){
 if(cmd === `ban` || cmd === `b`){
 
     if(!message.member.hasPermission(`BAN_MEMBERS`)){
-        return message.channel.send(`:x: **Brak permisji!**\n*Nie posiadasz permisji* \`BAN_MEMBERS\``)
+        return message.channel.send(errorembed.setDescription(`:x: **Brak permisji!**\n*Nie posiadasz permisji* \`BAN_MEMBERS\``))
     }
 
     var do_bana = message.mentions.members.first() 
 
     if(!do_bana){
-        return message.channel.send(`:x: **Brak oznaczenia**\nOznacz osobę, którą chcesz zbanować\nPrzykład: \`t^ban @Toshinori\``)
+        return message.channel.send(errorembed.setDescription(`:x: **Brak oznaczenia**\nOznacz osobę, którą chcesz zbanować\nPrzykład: \`t^ban @Toshinori\``))
     }
 
     if(!do_bana.bannable || do_bana.id === message.author.id){
-        return message.channel.send(`:x: **Nie można wykonać komendy!**\nOsoba, która została oznaczona nie jest możliwa do zbanowania`)
+        return message.channel.send(errorembed.setDescription(`:x: **Nie można wykonać komendy!**\nOsoba, która została oznaczona nie jest możliwa do zbanowania`))
     }else{
 
     var powodp = args.slice(1).join(" ");
@@ -720,7 +720,7 @@ if(cmd === "config" || cmd === "konfiguracja"){
         var onf1 = (args[1])
 
         if(!onf1){
-            return message.channel.send("**Dostępne Opcje** \`on / off\`")
+            return message.channel.send(errorembed.setDescription("**Dostępne Opcje** \`on / off\`"))
         }
         if(onf1 === "on"){
             con.query(`SELECT reports FROM config WHERE id_serwera="${message.guild.id}"`, function(err, row){
@@ -731,7 +731,7 @@ if(cmd === "config" || cmd === "konfiguracja"){
                         return message.channel.send("<a:yes:793842528864174091> **Zgłoszenia aktywowane**\nUstaw kanał zgłoszeń \`t^ustaw log-channel <#Kanał>\`")
                     })
                 }else{
-                    return message.channel.send("<a:yes:793842528864174091> **Zgłoszenia są już aktywowane**")
+                    return message.channel.send(errorembed.setDescription("<a:yes:793842528864174091> **Zgłoszenia są już aktywowane**"))
                 }
             })
         }else if(onf1 === "off"){
@@ -739,7 +739,7 @@ if(cmd === "config" || cmd === "konfiguracja"){
                 if(err) throw err;
                 if(!row.length){
 
-                      return message.channel.send("<a:yes:793842528864174091> **Zgłoszenia są już dezaktywowane**")
+                      return message.channel.send(errorembed.setDescription("<a:yes:793842528864174091> **Zgłoszenia są już dezaktywowane**"))
                    
                 }else{
                   
@@ -759,7 +759,7 @@ if(cmd === "config" || cmd === "konfiguracja"){
         var onf12 = (args[1])
 
         if(!onf12){
-            return message.channel.send("**Dostępne Opcje** \`on / off\`")
+            return message.channel.send(errorembed.setDescription("**Dostępne Opcje** \`on / off\`"))
         }
         if(onf12 === "on"){
             con.query(`SELECT chat_guard FROM config WHERE id_serwera="${message.guild.id}"`, function(err, row){
@@ -770,7 +770,7 @@ if(cmd === "config" || cmd === "konfiguracja"){
                         return message.channel.send("<a:yes:793842528864174091> **ChatGuard aktywowany**\n\`Twój serwer jest już chroniony przed toksycznymi osobami\`")
                     })
                 }else{
-                    return message.channel.send("<a:yes:793842528864174091> **ChatGuard jest już aktywowany**")
+                    return message.channel.send(errorembed.setDescription("<a:yes:793842528864174091> **ChatGuard jest już aktywowany**"))
                 }
             })
         }else if(onf12 === "off"){
@@ -778,7 +778,7 @@ if(cmd === "config" || cmd === "konfiguracja"){
                 if(err) throw err;
                 if(!row.length){
 
-                      return message.channel.send("<a:yes:793842528864174091> **ChatGuard jest już dezaktywowany**")
+                      return message.channel.send(errorembed.setDescription("<a:yes:793842528864174091> **ChatGuard jest już dezaktywowany**"))
                    
                 }else{
                   
@@ -798,7 +798,7 @@ if(cmd === "config" || cmd === "konfiguracja"){
         var onf12o = (args[1])
 
         if(!onf12o){
-            return message.channel.send("**Dostępne Opcje** \`on / off\`")
+            return message.channel.send(errorembed.setDescription("**Dostępne Opcje** \`on / off\`"))
         }
         if(onf12o === "on"){
             con.query(`SELECT alerts FROM config WHERE id_serwera="${message.guild.id}"`, function(err, row){
@@ -809,7 +809,7 @@ if(cmd === "config" || cmd === "konfiguracja"){
                         return message.channel.send("<a:yes:793842528864174091> **Powiadomienia aktywowane**\nUstaw kanał zgłoszeń komendą \`t^ustaw alerts-channel <#Kanał>\`")
                     })
                 }else{
-                    return message.channel.send("<a:yes:793842528864174091> **Powiadomienia są już aktywowane**")
+                    return message.channel.send(errorembed.setDescription("<a:yes:793842528864174091> **Powiadomienia są już aktywowane**"))
                 }
             })
         }else if(onf12o === "off"){
@@ -817,13 +817,13 @@ if(cmd === "config" || cmd === "konfiguracja"){
                 if(err) throw err;
                 if(!row.length){
 
-                      return message.channel.send("<a:yes:793842528864174091> **Powiadomienia są już dezaktywowane**")
+                      return message.channel.send(errorembed.setDescription("<a:yes:793842528864174091> **Powiadomienia są już dezaktywowane**"))
                    
                 }else{
                   
                     con.query(`UPDATE config SET alerts="0" WHERE id_serwera="${message.guild.id}"`, function(err){
                         if(err) throw err;
-                        return message.channel.send("<a:yes:793842528864174091> **Powiadomienia są już dezaktywowane**\n")
+                        return message.channel.send(errorembed.setDescription("<a:yes:793842528864174091> **Powiadomienia są już dezaktywowane**\n"))
                     })
 
         
@@ -848,7 +848,7 @@ if(cmd === "config" || cmd === "konfiguracja"){
                         return message.channel.send("<a:yes:793842528864174091> **AntiInvite aktywowany**\nUstaw karę za wysyłanie zaproszeń \`t^ustaw invite-punichment <ban/kick/mute/warn>\`")
                     })
                 }else{
-                    return message.channel.send("<a:yes:793842528864174091> **AntiInvite jest już aktywowany**")
+                    return message.channel.send(errorembed.setDescription("<a:yes:793842528864174091> **AntiInvite jest już aktywowany**"))
                 }
             })
         }else if(onf12ioo === "off"){
