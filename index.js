@@ -9,7 +9,7 @@ const { inspect } = require('util');
 const express = require("express");
 const app = express();
 const errorembed = new Discord.MessageEmbed().setColor("#cb6a6b").setTitle(`<a:emoji_12:794157906990727170> Error`)
-const n_word = require("./p_word.json")
+const n_word = require("./p_words.json")
 
 
 
