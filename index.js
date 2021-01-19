@@ -9,6 +9,7 @@ const { inspect } = require('util');
 const express = require("express");
 const app = express();
 const errorembed = new Discord.MessageEmbed().setColor("#cb6a6b").setTitle(`<a:emoji_12:794157906990727170> Error`)
+const n_word = require("./p_word.json")
 
 
 
@@ -1067,8 +1068,8 @@ client.on('message', async (message_check) => {
     if(message_check.author.bot) return;
     if(message_check.member.hasPermission(`ADMINISTRATOR`)) return;
 
-  for (var i = 0; i < n_words.length; i++) {
-    if (message_check.content.includes(n_words[i])) {
+  for (var i = 0; i < n_word.przeklenstwa.length; i++) {
+    if (message_check.content.includes(n_word.przeklenstwa[i])) {
       con.query(`SELECT chat_guard FROM config WHERE id_serwera="${message_check.guild.id}"`, function(err, ree){
         if(err) return;
         if(!ree.length){
