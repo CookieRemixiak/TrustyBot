@@ -17,20 +17,12 @@ const n_word = require("./p_words.json")
 // &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& WENHOOKI  &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 
-const webohook_admi = new Discord.WebhookClient("793206793454878732", "pENZKXsUTYu65zcZRvqm495-4aKk9E3QTe0FgMqKa4S8FdYl_V9vQMz2DWRCxpXnxXMq");
-const webhook_logs_join_remove = new Discord.WebhookClient("793448642546630677", "romZb8pNbA2t4v7IoLZk5IgVgDIZDDapsMRQ-wE_vzW8Oe0EvsCn2BmQisKSc5i46isN");
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& EVENT ON MESSAGE &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 
 
 
-const con = sql.createConnection({
-    host: "51.83.136.0",
-    user: "db_64290",
-    password: "VBRwEUx85TJq",
-    database: "db_64290"
-})
 
 con.connect(function(err) {
     if (err) throw err;
